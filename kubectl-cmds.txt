@@ -1,0 +1,92 @@
+kubectl cluster-info dump
+
+(1) curl http://10.43.83.12:443
+
+
+(2 ) route -n 
+
+
+(3) iptables -L
+
+
+(4) kube-proxy logs
+
+
+and this from worker node
+
+(5) netstat -anp | grep 443
+
+
+If OS is RHEL/CentO - from master node: 
+
+(6) systemctl status firewalld
+
+(7) firewall-cmd --list-all
+
+
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+	
+	
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+
+kubectl get pods --all-namespaces
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 9.30.194.83:6443 --token f78mpr.7hwph70obi9y4iri \
+    --discovery-token-ca-cert-hash sha256:5f78581b2cf2aec6fde7060768c1fcc556f6619bf04635c25a4161fb5d3ccbc5
+	
+	
+kubectl get nodes
+
+kubectl config view
+
+cat /etc/kubernetes/admin.conf
+
+kubectl auth can-i create deployments
+
+kubectl explain pod.spec.container |less
+
+kubectl proxy port=8001 &
+
+curl http://localhost:8001/version
+
+curl http://localhost:8001/api/v1/namespaces/kube-system/pods | less
+
+sudo yum provides *etcdctl
+
+
+yum install -y etcd
+
+etcdctl -h
+
+kubectl get ns
+
+kubectl get all --all-namespaces
+
+kubectl describe ns kube-system
+
+ kubectl create deployment --image=nginx newnginx
+ 
+ kubectl get all
+
+kubectl get deployment.apps/newnginx -o yaml | less
+
+
+
+
